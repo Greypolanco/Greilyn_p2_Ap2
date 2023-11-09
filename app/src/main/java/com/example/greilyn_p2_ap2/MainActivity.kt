@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.greilyn_p2_ap2.ui.Gastos.GastosScreen
 import com.example.greilyn_p2_ap2.ui.theme.Greilyn_p2_Ap2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //aca va el screen
+                    GastosScreen()
                 }
             }
         }
