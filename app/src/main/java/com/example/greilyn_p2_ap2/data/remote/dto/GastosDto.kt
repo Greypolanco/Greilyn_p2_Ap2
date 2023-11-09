@@ -8,7 +8,7 @@ data class GastosDto(
     var fecha : String,
     var suplidor : String,
     var concepto : String,
-    var nfc : String,
+    var ncf : String,
     var itbis : String,
     val monto : Int
 )

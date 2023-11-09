@@ -33,14 +33,14 @@ class GastosViewModel @Inject constructor(
     var suplidor by mutableStateOf("")
     var fecha by mutableStateOf("")
     var concepto by mutableStateOf("")
-    var nfc by mutableStateOf("")
+    var ncf by mutableStateOf("")
     var itbis by mutableStateOf("")
     var monto by mutableStateOf(0)
 
     var fechaInvalida by mutableStateOf(true)
     var suplidorInvalido by mutableStateOf(true)
     var conceptoInvalido by mutableStateOf(true)
-    var nfcInvalido by mutableStateOf(true)
+    var ncfInvalido by mutableStateOf(true)
     var itbisInvalido by mutableStateOf(true)
     var montoInvalido by mutableStateOf(true)
 
@@ -83,7 +83,7 @@ class GastosViewModel @Inject constructor(
                 fecha = fecha,
                 suplidor = suplidor,
                 concepto = concepto,
-                nfc = nfc,
+                ncf = ncf,
                 itbis = itbis,
                 monto = monto
             )
@@ -113,9 +113,9 @@ class GastosViewModel @Inject constructor(
             conceptoInvalido = false
             return conceptoInvalido
         }
-        if(nfc.isBlank()){
-            nfcInvalido = false
-            return nfcInvalido
+        if(ncf.isBlank()){
+            ncfInvalido = false
+            return ncfInvalido
         }
         if(itbis.isBlank()){
             itbisInvalido = false
@@ -134,7 +134,7 @@ class GastosViewModel @Inject constructor(
         fecha = ""
         suplidor = ""
         concepto = ""
-        nfc = ""
+        ncf = ""
         itbis = ""
         monto = 0
     }

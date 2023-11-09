@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -78,26 +79,40 @@ fun GastosScreen(
         if (viewModel.fechaInvalida == false) {
             Text(text = "fecha es Requerida", color = Color.Red, fontSize = 12.sp)
         }
-    }
-    Spacer(modifier = Modifier.height(8.dp))
-    OutlinedButton(onClick = {
-        keyBoardControlle?.hide()
-        if(viewModel.validar()){
-            viewModel.save()
-        }
-    }, modifier = Modifier.fillMaxWidth()) {
-        Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
-        Text(text = "Guardar")
-    }
-    Spacer(modifier = Modifier.width(12.dp))
-    consultaGastos(gastos = gastos)
+        Spacer(modifier = Modifier.height(8.dp))
 
+        //suplidor
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = viewModel.suplidor, onValueChange = { viewModel.suplidor = it },
+            label = { Text(text = "Suplidor") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+        )
+        if (viewModel.suplidorInvalido == false) {
+            Text(text = "suplidor es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        consultaGastos(gastos = gastos)
+    }
+//    OutlinedButton(onClick = {
+//        keyBoardControlle?.hide()
+//        if(viewModel.validar()){
+//            viewModel.save()
+//        }
+//    }, modifier = Modifier.fillMaxWidth()) {
+//        Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
+//        Text(text = "Guardar")
+//    }
+//
 }
 @Composable
 fun consultaGastos(gastos: Resource<List<GastosDto>>, viewModel: GastosViewModel = hiltViewModel()){
 
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(gastos) { gastos ->
+        items(gastos.data ?: emptyList()) { gastos ->
             consultaGastosItem(gastos)
         }
     }
@@ -127,6 +142,18 @@ fun consultaGastosItem(gastos: GastosDto, viewModel: GastosViewModel = hiltViewM
                 Spacer(modifier = Modifier.width(30.dp))
                 Text(text = gastos.fecha)
             }
+            Text(text = gastos.suplidor)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = gastos.concepto)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row {
+                Column {
+                    Text(text = "NCF:"+gastos.ncf)
+                    Text(text = "Itbis:" + gastos.itbis)
+                }
+
+            }
+
         }
         Button(
             onClick = {
