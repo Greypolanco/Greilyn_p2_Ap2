@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface GastosApi {
@@ -20,4 +21,7 @@ interface GastosApi {
 
     @DELETE("/api/Gastos/{id}")
     suspend fun deletedGastos(@Path("id") id: Int): Response<GastosDto>
+
+    @PUT("api/Gasto/{id}")
+    suspend fun putGasto(@Path("id") gastoId: Int, @Body gastoDto: GastosDto): Response<GastosDto>
 }
