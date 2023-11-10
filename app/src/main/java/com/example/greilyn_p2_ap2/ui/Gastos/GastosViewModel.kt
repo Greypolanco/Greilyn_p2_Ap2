@@ -48,6 +48,7 @@ class GastosViewModel @Inject constructor(
     var ncfInvalido by mutableStateOf(true)
     var itbisInvalido by mutableStateOf(true)
     var montoInvalido by mutableStateOf(true)
+    var suplidorIdInvalido by mutableStateOf(true)
 
     private val _uiState = MutableStateFlow(GastosListState())
     val uiState: StateFlow<GastosListState> = _uiState.asStateFlow()
@@ -137,9 +138,13 @@ class GastosViewModel @Inject constructor(
             fechaInvalida = false
             return fechaInvalida
         }
-        if(idsuplidor <= 0){
+        if(suplidor.isBlank()){
             suplidorInvalido = false
             return suplidorInvalido
+        }
+        if(idsuplidor <= 0){
+            suplidorIdInvalido = false
+            return suplidorIdInvalido
         }
         if(concepto.isBlank()){
             conceptoInvalido = false

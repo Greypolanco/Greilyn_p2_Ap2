@@ -145,7 +145,7 @@ fun GastosScreen(
                 })
             }
         }
-        if (viewModel.suplidorInvalido == false) {
+        if (viewModel.suplidorInvalido == false and viewModel.suplidorIdInvalido == false) {
             Text(text = "Suplidor es Requerido", color = Color.Red, fontSize = 12.sp)
         }
 
