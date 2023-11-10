@@ -229,10 +229,12 @@ fun GastosScreen(
             keyBoardControlle?.hide()
             if(viewModel.validar()){
                 viewModel.save()
+                selectedItem = ""
             }
         }, modifier = Modifier.fillMaxWidth()) {
             Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
             Text(text = "Guardar")
+
         }
         Spacer(modifier = Modifier.height(8.dp))
         consultaGastos(gastos = gastos)
