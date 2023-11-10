@@ -45,7 +45,7 @@ class GastosViewModel @Inject constructor(
     var montoInvalido by mutableStateOf(true)
 
     private var _state = mutableStateOf(GastosListState())
-    val state: State<GastosListState> = _state
+    val _uistate: State<GastosListState> = _state
 
     val gastos : StateFlow<Resource<List<GastosDto>>> = gastosRepository.getGastos().stateIn(
         scope = viewModelScope,
@@ -61,7 +61,8 @@ class GastosViewModel @Inject constructor(
             _isMessageShown.emit(true)
         }
     }
-    init {
+
+    fun actualizar(){
         gastosRepository.getGastos().onEach {result ->
             when(result){
                 is Resource.Loading -> {
@@ -75,6 +76,9 @@ class GastosViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+    init {
+        actualizar()
     }
 
     fun save(){
@@ -90,12 +94,30 @@ class GastosViewModel @Inject constructor(
             if(validar()){
                 gastosRepository.postGastos(gastosDto)
                 limpiar()
+                actualizar()
             }
         }
     }
     fun delete(id : Int){
         viewModelScope.launch {
             gastosRepository.deleteGastos(id)
+            actualizar()
+        }
+    }
+
+    fun put(){
+        viewModelScope.launch {
+            val gastosDto = GastosDto(
+                fecha = fecha,
+                idSuplidor = idsuplidor,
+                concepto = concepto,
+                ncf = ncf,
+                itbis = itbis,
+                monto = monto
+            )
+            gastosRepository.postGastos(gastosDto)
+            limpiar()
+            actualizar()
         }
     }
 

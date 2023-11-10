@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -120,33 +121,46 @@ fun GastosScreen(
         if (viewModel.suplidorInvalido == false) {
             Text(text = "Concepto es Requerido", color = Color.Red, fontSize = 12.sp)
         }
+        Row {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(1.dp)
+            ){
+                //ncf
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp),
+                    value = viewModel.ncf, onValueChange = { viewModel.ncf = it },
+                    label = { Text(text = "NCF") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                )
+                if (viewModel.ncfInvalido == false) {
+                    Text(text = "El NCF es Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+            }
 
-        //ncf
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            value = viewModel.ncf, onValueChange = { viewModel.ncf = it },
-            label = { Text(text = "NCF") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-        )
-        if (viewModel.ncfInvalido == false) {
-            Text(text = "El NCF es Requerido", color = Color.Red, fontSize = 12.sp)
-        }
+            Spacer(modifier = Modifier.width(12.dp))
 
-        //Itbis
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            value = viewModel.itbis, onValueChange = { viewModel.itbis = it },
-            label = { Text(text = "ITBIS") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-        )
-        if (viewModel.itbisInvalido == false) {
-            Text(text = "El ITBIS es Requerido", color = Color.Red, fontSize = 12.sp)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(1.dp)
+            ){
+                //Itbis
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp),
+                    value = viewModel.itbis, onValueChange = { viewModel.itbis = it },
+                    label = { Text(text = "ITBIS") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                )
+                if (viewModel.itbisInvalido == false) {
+                    Text(text = "El ITBIS es Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+            }
         }
 
         //monto
@@ -217,7 +231,7 @@ fun consultaGastosItem(gastos: GastosDto, viewModel: GastosViewModel = hiltViewM
             }
             Text(text = gastos.suplidor ?: "" , fontWeight = FontWeight.Bold,fontSize = 20.sp)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = gastos.concepto)
+            Text(text = gastos.concepto,  overflow = TextOverflow.Ellipsis, maxLines = 2)
             Spacer(modifier = Modifier.height(4.dp))
             Column {
                 Text(text = "NCF:"+gastos.ncf)
@@ -251,8 +265,12 @@ fun consultaGastosItem(gastos: GastosDto, viewModel: GastosViewModel = hiltViewM
                     containerColor = Color.Green,
                     contentColor = Color.Black)
             ) {
-                Row {
+                Row (
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     Icon(imageVector = Icons.Default.Edit, contentDescription ="Modificar")
+                    Spacer(modifier = Modifier.width(5.dp))
                     Text("Modificar")
                 }
 
