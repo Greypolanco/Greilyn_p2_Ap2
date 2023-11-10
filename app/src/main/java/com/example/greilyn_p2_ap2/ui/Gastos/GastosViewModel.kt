@@ -93,10 +93,9 @@ class GastosViewModel @Inject constructor(
             }
         }
     }
-    fun delete(gastoId : Int, gastosDto: GastosDto){
+    fun delete(id : Int){
         viewModelScope.launch {
-            gastosRepository.deleteGastos(gastoId,gastosDto)
-            limpiar()
+            gastosRepository.deleteGastos(id)
         }
     }
 
