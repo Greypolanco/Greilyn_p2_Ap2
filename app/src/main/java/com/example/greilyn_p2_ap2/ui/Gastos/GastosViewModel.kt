@@ -169,7 +169,7 @@ class GastosViewModel @Inject constructor(
     private fun limpiar(){
         fecha = ""
         suplidor = ""
-        idsuplidor = 0
+        idsuplidor = 1
         concepto = ""
         ncf = ""
         itbis = 0
