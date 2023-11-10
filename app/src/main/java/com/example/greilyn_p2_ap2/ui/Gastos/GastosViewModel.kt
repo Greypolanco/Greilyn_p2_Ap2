@@ -1,6 +1,5 @@
 package com.example.greilyn_p2_ap2.ui.Gastos
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -68,7 +67,7 @@ class GastosViewModel @Inject constructor(
         }
     }
 
-    fun actualizar(){
+    private fun actualizar(){
         gastosRepository.getGastos().onEach {result ->
             when (result) {
                 is Resource.Loading -> {
@@ -117,7 +116,7 @@ class GastosViewModel @Inject constructor(
 
     fun put(){
         viewModelScope.launch {
-            val gastosDto = GastosDto(
+            val gastos = GastosDto(
                 fecha = fecha,
                 idSuplidor = idsuplidor,
                 suplidor = suplidor,
@@ -127,7 +126,7 @@ class GastosViewModel @Inject constructor(
                 descuento = descuento,
                 monto = monto
             )
-            gastosRepository.postGastos(gastosDto)
+            gastosRepository.postGastos(gastos)
             limpiar()
             actualizar()
         }
@@ -167,7 +166,7 @@ class GastosViewModel @Inject constructor(
         }
     }
 
-    fun limpiar(){
+    private fun limpiar(){
         fecha = ""
         suplidor = ""
         idsuplidor = 0
