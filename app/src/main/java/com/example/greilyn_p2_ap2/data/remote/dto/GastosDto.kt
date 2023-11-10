@@ -9,7 +9,7 @@ data class GastosDto(
     var suplidor : String? = null,
     val idSuplidor : Int,
     var concepto : String,
-    var descuento : Int = 0,
+    val descuento : Int? = null,
     var ncf : String,
     var itbis : String,
     val monto : Int
