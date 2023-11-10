@@ -19,5 +19,5 @@ interface GastosApi {
     suspend fun postGastos(@Body gastosDto: GastosDto) : Response<GastosDto>
 
     @DELETE("/api/Gastos/{id}")
-    suspend fun deletedGastos(@Path("id") gastosid: Int, @Body gastosDto: GastosDto) : Response<Unit>
+    suspend fun deletedGastos(@Path("id") id: Int): Response<GastosDto>
 }

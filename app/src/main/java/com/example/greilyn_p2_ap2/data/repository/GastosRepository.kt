@@ -40,5 +40,7 @@ class GastosRepository @Inject constructor(
     }
 
     suspend fun postGastos(gastosDto: GastosDto) = api.postGastos(gastosDto)
-    suspend fun deleteGastos(id: Int, gastosDto: GastosDto) = api.deletedGastos(id,gastosDto)
+    suspend fun deleteGastos(id: Int) : GastosDto?{
+        return api.deletedGastos(id).body()
+    }
 }
