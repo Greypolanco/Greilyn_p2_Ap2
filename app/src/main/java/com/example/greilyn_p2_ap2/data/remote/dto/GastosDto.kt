@@ -11,6 +11,6 @@ data class GastosDto(
     var concepto : String,
     val descuento : Int? = null,
     var ncf : String,
-    var itbis : String,
+    val itbis : Int? = null,
     val monto : Int
 )

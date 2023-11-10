@@ -152,10 +152,13 @@ fun GastosScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .padding(vertical = 8.dp),
-                    value = viewModel.itbis, onValueChange = { viewModel.itbis = it },
+                    value = viewModel.itbis.toString(), onValueChange = { viewModel.itbis = it.toIntOrNull() ?: 0 },
                     label = { Text(text = "ITBIS") },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Number
+                    )
                 )
                 if (viewModel.itbisInvalido == false) {
                     Text(text = "El ITBIS es Requerido", color = Color.Red, fontSize = 12.sp)

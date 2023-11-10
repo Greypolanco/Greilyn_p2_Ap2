@@ -37,7 +37,7 @@ class GastosViewModel @Inject constructor(
     var fecha by mutableStateOf("")
     var concepto by mutableStateOf("")
     var ncf by mutableStateOf("")
-    var itbis by mutableStateOf("")
+    var itbis by mutableStateOf(0)
     var descuento by mutableStateOf(1)
     var monto by mutableStateOf(0)
 
@@ -146,7 +146,7 @@ class GastosViewModel @Inject constructor(
             ncfInvalido = false
             return ncfInvalido
         }
-        if(itbis.isBlank()){
+        if(itbis <= 0){
             itbisInvalido = false
             return itbisInvalido
         }
@@ -164,7 +164,7 @@ class GastosViewModel @Inject constructor(
         idsuplidor = 0
         concepto = ""
         ncf = ""
-        itbis = ""
+        itbis = 0
         monto = 0
     }
 }
