@@ -11,18 +11,21 @@ import com.example.greilyn_p2_ap2.data.repository.GastosRepository
 import com.example.greilyn_p2_ap2.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class GastosListState(
     val isLoading: Boolean = false,
-    val cliente: List<GastosDto> = emptyList(),
+    val gastos: List<GastosDto> = emptyList(),
     val error : String = ""
 )
 
@@ -35,6 +38,7 @@ class GastosViewModel @Inject constructor(
     var concepto by mutableStateOf("")
     var ncf by mutableStateOf("")
     var itbis by mutableStateOf("")
+    var descuento by mutableStateOf(1)
     var monto by mutableStateOf(0)
 
     var fechaInvalida by mutableStateOf(true)
@@ -44,8 +48,8 @@ class GastosViewModel @Inject constructor(
     var itbisInvalido by mutableStateOf(true)
     var montoInvalido by mutableStateOf(true)
 
-    private var _state = mutableStateOf(GastosListState())
-    val _uistate: State<GastosListState> = _state
+    private val _uiState = MutableStateFlow(GastosListState())
+    val uiState: StateFlow<GastosListState> = _uiState.asStateFlow()
 
     val gastos : StateFlow<Resource<List<GastosDto>>> = gastosRepository.getGastos().stateIn(
         scope = viewModelScope,
@@ -64,15 +68,17 @@ class GastosViewModel @Inject constructor(
 
     fun actualizar(){
         gastosRepository.getGastos().onEach {result ->
-            when(result){
+            when (result) {
                 is Resource.Loading -> {
-                    _state.value = GastosListState(isLoading = true)
+                    _uiState.update { it.copy(isLoading = true) }
                 }
+
                 is Resource.Success -> {
-                    _state.value = GastosListState(isLoading = true)
+                    _uiState.update { it.copy(gastos = result.data ?: emptyList()) }
                 }
+
                 is Resource.Error -> {
-                    _state.value = GastosListState(isLoading = true)
+                    _uiState.update { it.copy(error = result.message ?: "Error desconocido") }
                 }
             }
         }.launchIn(viewModelScope)
@@ -89,6 +95,7 @@ class GastosViewModel @Inject constructor(
                 concepto = concepto,
                 ncf = ncf,
                 itbis = itbis,
+                descuento = descuento,
                 monto = monto
             )
             if(validar()){
@@ -113,6 +120,7 @@ class GastosViewModel @Inject constructor(
                 concepto = concepto,
                 ncf = ncf,
                 itbis = itbis,
+                descuento = descuento,
                 monto = monto
             )
             gastosRepository.postGastos(gastosDto)
