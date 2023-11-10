@@ -30,7 +30,7 @@ data class GastosListState(
 class GastosViewModel @Inject constructor(
     private val gastosRepository: GastosRepository
 ): ViewModel(){
-    var suplidor by mutableStateOf("")
+    var idsuplidor by mutableStateOf(0)
     var fecha by mutableStateOf("")
     var concepto by mutableStateOf("")
     var ncf by mutableStateOf("")
@@ -81,7 +81,7 @@ class GastosViewModel @Inject constructor(
         viewModelScope.launch {
             val gastosDto = GastosDto(
                 fecha = fecha,
-                suplidor = suplidor,
+                idSuplidor = idsuplidor,
                 concepto = concepto,
                 ncf = ncf,
                 itbis = itbis,
@@ -105,7 +105,7 @@ class GastosViewModel @Inject constructor(
             fechaInvalida = false
             return fechaInvalida
         }
-        if(suplidor.isBlank()){
+        if(idsuplidor <= 0){
             suplidorInvalido = false
             return suplidorInvalido
         }
@@ -132,7 +132,7 @@ class GastosViewModel @Inject constructor(
 
     fun limpiar(){
         fecha = ""
-        suplidor = ""
+        idsuplidor = 0
         concepto = ""
         ncf = ""
         itbis = ""
