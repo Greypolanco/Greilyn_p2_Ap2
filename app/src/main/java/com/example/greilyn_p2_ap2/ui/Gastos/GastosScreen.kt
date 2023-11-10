@@ -1,8 +1,10 @@
 package com.example.greilyn_p2_ap2.ui.Gastos
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +17,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -31,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -161,7 +167,7 @@ fun GastosScreen(
             Text(text = "El Monto es Requerido", color = Color.Red, fontSize = 12.sp)
         }
 
-        OutlinedButton(onClick = {
+        Button(onClick = {
             keyBoardControlle?.hide()
             if(viewModel.validar()){
                 viewModel.save()
@@ -237,19 +243,40 @@ fun consultaGastosItem(gastos: GastosDto, viewModel: GastosViewModel = hiltViewM
                 .padding(vertical = 3.dp),
             horizontalArrangement = Arrangement.Center
         ){
-            Button(onClick = {  }) {
-                Text("Modificar")
+            Button(onClick = {  },
+                modifier = Modifier
+                    .width(160.dp)
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black)
+            ) {
+                Row {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription ="Modificar")
+                    Text("Modificar")
+                }
+
             }
             Spacer(modifier = Modifier.width(40.dp))
-            Button(
+            OutlinedButton(
                 onClick = {
-                    gastos.gastoId?.let { viewModel.delete(it, gastos) }
+                    gastos.gastoId?.let { viewModel.delete(it) }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(8.dp),
+                border = BorderStroke(2.dp, Color.Red),
+                contentPadding = PaddingValues(8.dp)
             ) {
-                Text(text = "Eliminar")
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Default.Close, contentDescription = "Eliminar", tint = Color.Red)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Eliminar", color = Color.Red)
+                }
             }
-
         }
 
     }
