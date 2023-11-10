@@ -1,6 +1,7 @@
 package com.example.greilyn_p2_ap2.ui.Gastos
 
-import androidx.compose.foundation.border
+
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,15 +12,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -32,7 +35,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,7 +70,7 @@ fun GastosScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(3.dp)
     ) {
         //fecha
         OutlinedTextField(
@@ -72,41 +78,101 @@ fun GastosScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = viewModel.fecha, onValueChange = { viewModel.fecha = it },
-            label = { Text(text = "Nombres") },
+            label = { Text(text = "Fecha") },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
         )
         if (viewModel.fechaInvalida == false) {
-            Text(text = "fecha es Requerida", color = Color.Red, fontSize = 12.sp)
+            Text(text = "Fecha es Requerida", color = Color.Red, fontSize = 12.sp)
         }
-        Spacer(modifier = Modifier.height(8.dp))
 
         //suplidor
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            value = viewModel.suplidor, onValueChange = { viewModel.suplidor = it },
+            value = viewModel.idsuplidor.toString(), onValueChange = {
+                viewModel.idsuplidor = it.toIntOrNull() ?: 0 },
             label = { Text(text = "Suplidor") },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
         )
         if (viewModel.suplidorInvalido == false) {
-            Text(text = "suplidor es Requerido", color = Color.Red, fontSize = 12.sp)
+            Text(text = "Suplidor es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+
+        //Concepto
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = viewModel.concepto, onValueChange = { viewModel.concepto = it },
+            label = { Text(text = "Concepto") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+        )
+        if (viewModel.suplidorInvalido == false) {
+            Text(text = "Concepto es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+
+        //ncf
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = viewModel.ncf, onValueChange = { viewModel.ncf = it },
+            label = { Text(text = "NCF") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+        )
+        if (viewModel.ncfInvalido == false) {
+            Text(text = "El NCF es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+
+        //Itbis
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = viewModel.itbis, onValueChange = { viewModel.itbis = it },
+            label = { Text(text = "ITBIS") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+        )
+        if (viewModel.itbisInvalido == false) {
+            Text(text = "El ITBIS es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+
+        //monto
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = viewModel.monto.toString(),
+            onValueChange = { viewModel.monto = it.toIntOrNull() ?: 0 },
+            label = { Text(text = "Monto") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Number
+            )
+        )
+        if (viewModel.montoInvalido == false) {
+            Text(text = "El Monto es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
+
+        OutlinedButton(onClick = {
+            keyBoardControlle?.hide()
+            if(viewModel.validar()){
+                viewModel.save()
+            }
+        }, modifier = Modifier.fillMaxWidth()) {
+            Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
+            Text(text = "Guardar")
         }
         Spacer(modifier = Modifier.height(8.dp))
         consultaGastos(gastos = gastos)
     }
-//    OutlinedButton(onClick = {
-//        keyBoardControlle?.hide()
-//        if(viewModel.validar()){
-//            viewModel.save()
-//        }
-//    }, modifier = Modifier.fillMaxWidth()) {
-//        Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
-//        Text(text = "Guardar")
-//    }
-//
 }
 @Composable
 fun consultaGastos(gastos: Resource<List<GastosDto>>, viewModel: GastosViewModel = hiltViewModel()){
@@ -121,46 +187,70 @@ fun consultaGastos(gastos: Resource<List<GastosDto>>, viewModel: GastosViewModel
 
 @Composable
 fun consultaGastosItem(gastos: GastosDto, viewModel: GastosViewModel = hiltViewModel()){
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
         Column(
             modifier = Modifier
-                .padding(13.dp)
+                .padding(8.dp)
                 .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = Color.Black,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(13.dp)
         ){
-            Row {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+            ) {
                 Text(text ="ID:"+ gastos.gastoId)
-                Spacer(modifier = Modifier.width(30.dp))
-                Text(text = gastos.fecha)
+
+                Text(text = gastos.fecha,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            Text(text = gastos.suplidor)
+            Text(text = gastos.suplidor ?: "" , fontWeight = FontWeight.Bold,fontSize = 20.sp)
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = gastos.concepto)
             Spacer(modifier = Modifier.height(4.dp))
-            Row {
-                Column {
-                    Text(text = "NCF:"+gastos.ncf)
+            Column {
+                Text(text = "NCF:"+gastos.ncf)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp)
+                ){
                     Text(text = "Itbis:" + gastos.itbis)
+                    Text(text = "$" + gastos.monto,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.End,
+                        color = Color.Red,
+                        modifier = Modifier.fillMaxWidth())
                 }
 
             }
+        }
+        Divider(Modifier.padding(5.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 3.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Button(onClick = {  }) {
+                Text("Modificar")
+            }
+            Spacer(modifier = Modifier.width(40.dp))
+            Button(
+                onClick = {
+                    gastos.gastoId?.let { viewModel.delete(it, gastos) }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            ) {
+                Text(text = "Eliminar")
+            }
 
         }
-        Button(
-            onClick = {
-                gastos.gastoId?.let { viewModel.delete(it, gastos) }
-            }
-        ) {
-            Text(text = "Eliminar")
-        }
+
     }
 }
